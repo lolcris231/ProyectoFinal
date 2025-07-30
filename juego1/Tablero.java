@@ -2,8 +2,8 @@ package juego1;
 
 
 public class Tablero {
-	public int[][] tablero;
 
+	public int[][] tablero;
 	public int posPiratai = 0, posPirataj = 0;
 	public int posTesoroi = 0, posTesoroj = 0;
 	public int temp = 0;
@@ -20,11 +20,11 @@ public class Tablero {
 
 		for (int i = 0; i < dificultad; i++) {
 			for (int j = 0; j < tablero[0].length; j++) {
-				tablero[i][j] = 0;
+				tablero[i][j] = 0; //el cero representa la arena
 			}
 		}
 
-		// Agua (bordes)
+		// Agua (bordes) representado por 1
 		for (int i = 0; i < dificultad; i++) {
 			tablero[i][0] = 1;
 			tablero[0][i] = 1;
@@ -33,12 +33,15 @@ public class Tablero {
 		}
 
 		// Posición del pirata
+		
 		do {
-			posPiratai = 1 + (int) (Math.random() * (dificultad - 2));
+			posPiratai = 1 + (int) (Math.random() * (dificultad - 2)); 
+			//el multiplicar al randomico la dificultad menos 2 ayuda a identificar una posición central para evitar que toque los bordes superior e inferior
 			posPirataj = 1 + (int) (Math.random() * (dificultad - 2));
+			//algo parecido pasa con la operación correspondiente a posPirataj
 		} while (tablero[posPiratai][posPirataj] != 0);
 
-		tablero[posPiratai][posPirataj] = 2;
+		tablero[posPiratai][posPirataj] = 2; //el 2 representa al pirata
 
 		// Posición del tesoro
 		do {
@@ -46,7 +49,7 @@ public class Tablero {
 			posTesoroj = 1 + (int) (Math.random() * (dificultad - 2));
 		} while ((posTesoroi == posPiratai && posTesoroj == posPirataj) || tablero[posTesoroi][posTesoroj] != 0);
 
-		tablero[posTesoroi][posTesoroj] = 3;
+		tablero[posTesoroi][posTesoroj] = 3; //el 3 representa el tesoro
 	}
 
 	public int[][] getTablero() {

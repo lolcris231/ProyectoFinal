@@ -30,19 +30,26 @@ public class visualApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		mostrarPantallaInicial(primaryStage);
+		/*
+		 * se le da solo el stage de la pantalla de inicio, porque en esta función, eventualmente le dara lugar a la siguiente pantalla, 
+		 * cerrando la inicial
+		 */
 	}
 
+	/*
+	 * 
+	 */
 	private void mostrarPantallaInicial(Stage stage) {
 		VBox root = new VBox(20);
 		root.setAlignment(Pos.CENTER);
 		root.setStyle("-fx-background-color: #12a4ff;");
 
 		Label titulo = new Label("El Pirata Pata de Palo");
-		titulo.setFont(Font.font("Times new Roman", 38));
+		titulo.setFont(Font.font("Times new Roman", 40));
 		titulo.setTextFill(Color.GOLD);
 
 		Label instrucciones = new Label("Encuentra el tesoro en menos de 50 movimientos");
-		instrucciones.setFont(Font.font("Times new Roman",28));
+		instrucciones.setFont(Font.font("Times new Roman",30));
 		instrucciones.setTextFill(Color.DARKRED);
 
 		Button btnJugar = new Button("JUGAR");
@@ -118,6 +125,10 @@ public class visualApp extends Application {
 		stage.setTitle("El Pirata Pata de Palo");
 	}
 
+	
+	/*
+	 * Esta función se encarga de cambiar los colores del tablero para representar los cambios en este, se invoca cada vez que el tablero cambia
+	 */
 	private void actualizarTablero() {
 		gridTablero.getChildren().clear();
 		int[][] estadoTablero = tablero.getTablero();
@@ -143,12 +154,16 @@ public class visualApp extends Application {
 				// Agregar etiqueta con el valor
 				Label lblValor = new Label(String.valueOf(valor));
 				lblValor.setFont(Font.font("Times new Roman", 16));
+				
 				//celda.getChildren().add(lblValor); //numeros que representan el agua, arena, pirata y tesoro
 
-				gridTablero.add(celda, j, i);
+				gridTablero.add(celda, j, i); //se los pasa como j,i y no i,j debido a que j representa el eje x y i representa el eje y
 			}
 		}
 
+		/*
+		 * este if es solo una confimación
+		 */
 		if (lblMovimientos != null && lblVidas != null) {
 			lblMovimientos.setText("Movimientos: " + tablero.numMov);
 			lblVidas.setText("Vidas perdidas: " + tablero.vidasPerdidas);
@@ -157,8 +172,13 @@ public class visualApp extends Application {
 
 	private void moverPirata() {
 		int mov = (int)(Math.random() * 4);
-		int resultado = 0; // 0: movimiento válido, 1: cayó al agua, 2: encontró tesoro
-		int err = 0;
+		int resultado = 0;
+		
+		/*
+		 * el switch primero comprueba los casos de exceción y en caso de que no haya inconvenientes cambia la posición del pirata
+		 * las excepciones son: si el pirata toca el agua o encuentra el tesoro
+		 */
+		
 		switch (mov) {
 		case 0: // Abajo
 			if (tablero.tablero[tablero.posPiratai + 1][tablero.posPirataj] == 1) {
@@ -218,13 +238,19 @@ public class visualApp extends Application {
 		actualizarTablero();
 
 		if(tablero.numMov<50) {
-
-			// Mostrar alertas según el resultado
+			
+			/*
+			 * alertas de resultado:
+			 * 1) representa que el pirata cayó al agua y perdió una vida
+			 * 2) representa que el pirata llegó al tesoro y ganó
+			 * en caso de que el numero de movimientos llegue a 50, significa que el pirata perdió
+			 */
+			
 			if (resultado == 1) {
 				Alert alert = new Alert(Alert.AlertType.WARNING);
 				alert.setTitle("Peligro");
 				alert.setHeaderText("El pirata cayó al agua");
-				alert.setContentText("¡Cuidado! El pirata ha caído al agua. Se aumentó la cantidad de mi.");
+				alert.setContentText("¡Cuidado! El pirata ha caído al agua. Se aumentó la cantidad de muertes");
 				alert.showAndWait();
 				tablero.vidasPerdidas++;
 				lblVidas.setText("Vidas perdidas: " + tablero.vidasPerdidas);
@@ -243,7 +269,7 @@ public class visualApp extends Application {
 			alert.setHeaderText("El pirata se cansó de buscar el tesoro");
 			alert.setContentText("El pirata alcanzó el limite de movimientos");
 			alert.showAndWait();
-			btnMover.setDisable(true);
+			btnMover.setDisable(true); //se desactiva el boton de movimiento para obligar al usuario a reiniciar el juego
 		}
 	}
 }
