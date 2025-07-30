@@ -12,7 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import versiones_anteriores.Tablero;
+import juego1.Tablero;
 
 public class visualApp extends Application {
 
